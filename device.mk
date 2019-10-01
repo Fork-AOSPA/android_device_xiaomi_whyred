@@ -409,6 +409,11 @@ PRODUCT_PACKAGES += \
     android.hardware.sensors@1.0-service \
     android.hardware.sensors@1.0.vendor
 
+PRODUCT_DEXPREOPT_SPEED_APPS += \
+    Launcher3QuickStep \
+    Settings \
+    SystemUI
+
 # Tethering
 PRODUCT_PACKAGES += \
     TetheringConfigOverlay
