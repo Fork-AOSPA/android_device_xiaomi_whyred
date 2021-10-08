@@ -278,7 +278,8 @@ PRODUCT_PACKAGES += \
     init.target_dap.rc \
     ueventd.qcom.rc \
     fstab.qcom \
-    init.device.rc
+    init.device.rc \
+    init.logcat.rc
 
 # IRQ
 PRODUCT_COPY_FILES += \
