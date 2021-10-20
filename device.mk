@@ -447,6 +447,9 @@ PRODUCT_PACKAGES += \
 # Vibrator
 $(call inherit-product, vendor/qcom/opensource/vibrator/vibrator-vendor-product.mk)
 
+# VNDK
+PRODUCT_EXTRA_VNDK_VERSIONS := 30
+
 # Wifi
 PRODUCT_PACKAGES += \
     android.hardware.wifi@1.0-service \
