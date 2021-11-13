@@ -14,12 +14,6 @@ PRODUCT_RETROFIT_DYNAMIC_PARTITIONS := true
 OVERRIDE_PRODUCT_COMPRESSED_APEX := false
 $(call inherit-product, $(SRC_TARGET_DIR)/product/updatable_apex.mk)
 
-# Overlays
-DEVICE_PACKAGE_OVERLAYS += \
-    $(DEVICE_PATH)/overlay
-
-PRODUCT_ENFORCE_RRO_TARGETS := *
-
 # Platform
 TARGET_BOARD_PLATFORM := sdm660
 TARGET_KERNEL_VERSION := 4.19
