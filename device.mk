@@ -6,6 +6,9 @@
 
 DEVICE_PATH := device/xiaomi/whyred
 
+# Platform
+TARGET_BOARD_PLATFORM := sdm660
+
 # Overlays
 DEVICE_PACKAGE_OVERLAYS += \
     $(DEVICE_PATH)/overlay \
