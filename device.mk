@@ -22,6 +22,7 @@ PRODUCT_SOONG_NAMESPACES += \
 
 # QTI Common
 TARGET_COMMON_QTI_COMPONENTS := \
+    adreno-legacy \
     bt
 
 # Setup dalvik vm configs
