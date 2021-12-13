@@ -15,6 +15,10 @@ PRODUCT_ENFORCE_RRO_TARGETS := *
 # Platform
 TARGET_BOARD_PLATFORM := sdm660
 
+# QTI Components
+TARGET_COMMON_QTI_COMPONENTS := \
+    bt
+
 # Soong namespaces
 PRODUCT_SOONG_NAMESPACES += \
     $(DEVICE_PATH)
