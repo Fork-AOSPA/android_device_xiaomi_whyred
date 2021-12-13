@@ -16,6 +16,9 @@ TARGET_COMMON_QTI_COMPONENTS := \
     perf \
     usb
 
+# Platform
+TARGET_BOARD_PLATFORM := sdm660
+
 # Permissions
 PRODUCT_COPY_FILES += \
     $(DEVICE_PATH)/configs/system_ext-privapp-permissions-qti.xml:$(TARGET_COPY_OUT_SYSTEM_EXT)/etc/permissions/privapp-permissions-qti.xml
