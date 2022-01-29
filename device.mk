@@ -29,6 +29,7 @@ TARGET_COMMON_QTI_COMPONENTS := \
     audio \
     bt \
     gps \
+    init \
     overlay \
     perf \
     telephony \
@@ -235,19 +236,15 @@ PRODUCT_COPY_FILES += \
 
 # Init
 PRODUCT_PACKAGES += \
-    init.class_main.sh \
-    init.qcom.early_boot.sh \
-    init.qcom.post_boot.sh \
     init.qcom.sensors.sh \
     init.qti.dcvs.sh \
-    init.qcom.rc \
-    init.qcom.sh \
-    init.recovery.qcom.rc \
     init.target.rc \
     init.target_dap.rc \
-    ueventd.qcom.rc \
     fstab.qcom \
     init.device.rc
+
+PRODUCT_COPY_FILES += \
+    $(DEVICE_PATH)/rootdir/etc/fstab.qcom:$(TARGET_COPY_OUT_RAMDISK)/fstab.qcom
 
 # IRQ
 PRODUCT_COPY_FILES += \
