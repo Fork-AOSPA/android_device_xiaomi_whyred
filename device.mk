@@ -17,7 +17,8 @@ TARGET_BOARD_PLATFORM := sdm660
 
 # QTI Components
 TARGET_COMMON_QTI_COMPONENTS := \
-    bt
+    bt \
+    telephony
 
 # Soong namespaces
 PRODUCT_SOONG_NAMESPACES += \
@@ -383,9 +384,6 @@ PRODUCT_PACKAGES += \
     qti_telephony_hidl_wrapper.xml \
     qti-telephony-utils \
     qti_telephony_utils.xml \
-    telephony-ext
-
-PRODUCT_BOOT_JARS += \
     telephony-ext
 
 # Seccomp policy
