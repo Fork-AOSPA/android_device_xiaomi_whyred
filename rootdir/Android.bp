@@ -1,0 +1,52 @@
+
+
+// files that live under device/qcom/common/rootdir/etc/
+
+cc_prebuilt_binary {
+    name: "init.qcom.sensors.sh",
+
+    srcs: ["bin/init.qcom.sensors.sh"],
+    proprietary: true,
+}
+
+cc_prebuilt_binary {
+    name: "init.qti.dcvs.sh",
+
+    srcs: ["bin/init.qti.dcvs.sh"],
+    proprietary: true,
+}
+
+prebuilt_etc {
+    name: "init.target.rc",
+
+    src: "etc/init.target.rc",
+    relative_install_path: "init/hw",
+    proprietary: true,
+
+}
+
+prebuilt_etc {
+    name: "init.target_dap.rc",
+
+    src: "etc/init.target_dap.rc",
+    relative_install_path: "init/hw",
+    proprietary: true,
+
+}
+
+prebuilt_etc {
+    name: "fstab.qcom",
+
+    src: "etc/fstab.qcom",
+    proprietary: true,
+
+}
+
+prebuilt_etc {
+    name: "init.device.rc",
+
+    src: "etc/init.device.rc",
+    relative_install_path: "init/hw",
+    proprietary: true,
+
+}
