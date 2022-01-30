@@ -449,7 +449,6 @@ vendor/lib/libqmiservices.so|d1e3378b5ea0983daa4b25935b64070dc6cfaf6b
 system_ext/etc/permissions/telephony_system-ext_privapp-permissions-qti.xml|4f0056403f56928b8c75a617ba582f17061f89ae
 system_ext/etc/permissions/embms.xml|22e7474091f9f71f02dd0cfc76cfa8848a46f079
 system_ext/etc/permissions/qcrilhook.xml|30397e293b2c40e6b7a1d11c2a615cdd05de625a
--system_ext/framework/qti-telephony-common.jar|25a8f6690b9069db4a616390b14cb6041c659b94
 system_ext/etc/permissions/telephonyservice.xml|b7831598d3c19c6ce4ef431d1cc44d94c3c35a8d
 -system_ext/framework/embmslibrary.jar|b5fe26c1cea597af8a1751332d187f2f574816c1
 -system_ext/framework/qcrilhook.jar|ad688364314100318f305ed4ab5defec8766b20a
