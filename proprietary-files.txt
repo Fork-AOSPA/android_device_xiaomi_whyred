@@ -398,6 +398,10 @@ vendor/lib64/libdisp-aba.so|eb67e6d037c935e30e48f6d92fbbf2188b3f8239
 vendor/lib64/vendor.display.color@1.0.so|b1db446a13b1598675a8f538fe1d18d3b08ef570
 vendor/lib64/vendor.display.postproc@1.0.so|9d70df811e194e4dc6dce9a6a0c87cd74c507e9d
 
+# libtinyxml.so - from Prebuilt
+vendor/lib/libtinyxml.so|6d25006817df068adc3fba66b644b340107fb045
+vendor/lib64/libtinyxml.so|15b791b2c8b7da031de8db2f9d0721b9084f27a8
+
 # QMI - from ginkgo V12.5.1.0.RCOCNXM
 system_ext/etc/permissions/qti_libpermissions.xml|593bcb72cce68ceb0a70f50bcae7d460114e7c62
 system_ext/etc/permissions/qti_permissions.xml|e6ff4572352b1a4f91b6b9d7cbb1cad9924410a0
