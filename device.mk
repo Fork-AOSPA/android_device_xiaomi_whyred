@@ -17,7 +17,8 @@ TARGET_BOARD_PLATFORM := sdm660
 
 # QTI Components
 TARGET_COMMON_QTI_COMPONENTS := \
-    bt
+    bt \
+    perf
 
 # Soong namespaces
 PRODUCT_SOONG_NAMESPACES += \
