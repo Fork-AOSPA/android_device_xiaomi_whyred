@@ -40,6 +40,7 @@ TARGET_KERNEL_SOURCE := kernel/xiaomi/whyred
 TARGET_KERNEL_CONFIG := vendor/whyred_defconfig
 TARGET_KERNEL_VERSION := 4.19
 TARGET_KERNEL_CLANG_COMPILE := true
+KERNEL_MODULES_INSTALL := vendor
 
 # QCOM hardware
 BOARD_USES_QCOM_HARDWARE := true
