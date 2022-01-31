@@ -19,6 +19,7 @@ TARGET_BOARD_PLATFORM := sdm660
 TARGET_COMMON_QTI_COMPONENTS := \
     bt \
     overlay \
+    perf \
     telephony
 
 # Soong namespaces
