@@ -19,7 +19,6 @@ TARGET_KERNEL_VERSION := 4.19
 # QTI Components
 TARGET_COMMON_QTI_COMPONENTS := \
     bt \
-    overlay \
     perf \
     telephony \
     usb
