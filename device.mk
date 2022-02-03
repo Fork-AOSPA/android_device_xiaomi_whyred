@@ -25,7 +25,9 @@ TARGET_COMMON_QTI_COMPONENTS := \
     audio \
     bt \
     gps \
+    overlay \
     perf \
+    telephony \
     usb
 
 # Soong namespaces
@@ -109,6 +111,10 @@ PRODUCT_PACKAGES += \
 # Shim
 PRODUCT_PACKAGES += \
     libcamera_sdm660_shim
+
+# Capability Configstore
+PRODUCT_PACKAGES += \
+    vendor.qti.hardware.capabilityconfigstore@1.0.vendor
 
 # Component overrides
 PRODUCT_COPY_FILES += \
@@ -335,20 +341,6 @@ PRODUCT_PACKAGES += \
     libprotobuf-cpp-full \
     libavservices_minijail.vendor
 
-PRODUCT_PACKAGES += \
-    ims-ext-common \
-    ims_ext_common.xml \
-    qti-telephony-hidl-wrapper \
-    qti_telephony_hidl_wrapper.xml \
-    qti-telephony-hidl-wrapper-prd \
-    qti-telephony-hidl-wrapper-prd.xml \
-    qti-telephony-utils \
-    qti_telephony_utils.xml \
-    telephony-ext
-
-PRODUCT_BOOT_JARS += \
-    telephony-ext
-
 # Seccomp policy
 PRODUCT_COPY_FILES += \
     $(DEVICE_PATH)/seccomp/mediacodec-seccomp.policy:$(TARGET_COPY_OUT_VENDOR)/etc/seccomp_policy/mediacodec.policy \
@@ -368,11 +360,6 @@ PRODUCT_ALWAYS_PREOPT_EXTRACTED_APK := true
 USE_DEX2OAT_DEBUG := false
 PRODUCT_MINIMIZE_JAVA_DEBUG_INFO := true
 PRODUCT_ART_TARGET_INCLUDE_DEBUG_BUILD := false
-
-# Telephony
-PRODUCT_PACKAGES += \
-    ipacm \
-    IPACM_cfg.xml
 
 # Thermal
 PRODUCT_COPY_FILES += \
