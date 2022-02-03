@@ -20,7 +20,6 @@ TARGET_KERNEL_VERSION := 4.19
 TARGET_COMMON_QTI_COMPONENTS := \
     bt \
     perf \
-    telephony \
     usb
 
 # Soong namespaces
@@ -374,6 +373,9 @@ PRODUCT_PACKAGES += \
     qti_telephony_hidl_wrapper.xml \
     qti-telephony-utils \
     qti_telephony_utils.xml \
+    telephony-ext
+
+PRODUCT_BOOT_JARS += \
     telephony-ext
 
 # Seccomp policy
