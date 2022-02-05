@@ -6,10 +6,6 @@
 
 DEVICE_PATH := device/xiaomi/whyred
 
-# Enable updatable Apex
-PRODUCT_COMPRESSED_APEX := false
-$(call inherit-product, $(SRC_TARGET_DIR)/product/updatable_apex.mk)
-
 # Overlays
 DEVICE_PACKAGE_OVERLAYS += \
     $(DEVICE_PATH)/overlay
