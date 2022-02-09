@@ -33,7 +33,6 @@ persist.vendor.camera.isp.clock.optmz=0
 persist.vendor.camera.isp.turbo=1
 persist.vendor.camera.linkpreview=0
 persist.vendor.camera.ltm.overlap=13
-persist.vendor.camera.preview.ubwc=0
 persist.vendor.camera.stats.test=5
 persist.vendor.flash.light.lux=340
 persist.vendor.flash.low.lux=390
