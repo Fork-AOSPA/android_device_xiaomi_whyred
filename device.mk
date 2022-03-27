@@ -179,7 +179,8 @@ PRODUCT_PACKAGES += \
     libdisplayconfig \
     libtinyxml \
     libqdMetaData \
-    libqdMetaData.system
+    libqdMetaData.system \
+    libvulkan
 
 PRODUCT_PACKAGES += \
     android.frameworks.displayservice@1.0_32 \
