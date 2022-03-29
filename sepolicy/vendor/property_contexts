@@ -49,3 +49,7 @@ sys.thermal.                            u:object_r:thermal_engine_prop:s0
 
 # Wlan
 persist.vendor.wigig.npt.enable         u:object_r:vendor_default_prop:s0
+
+# PASR
+vendor.pasr.                            u:object_r:vendor_pasr_prop:s0
+ro.vendor.pasr.                         u:object_r:vendor_pasr_prop:s0

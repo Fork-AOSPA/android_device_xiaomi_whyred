@@ -51,3 +51,8 @@
 /sys/devices/platform/soc/ca0c000\.qcom,cci/ca0c000\.qcom,cci:qcom,camera@0/video4linux/video[0-9]/wakeup[0-9]+(/.*)?                                       u:object_r:sysfs_wakeup:s0
 /sys/devices/platform/soc/ca0c000\.qcom,cci/ca0c000\.qcom,cci:qcom,camera@1/video4linux/video[0-9]/wakeup[0-9]+(/.*)?                                       u:object_r:sysfs_wakeup:s0
 /sys/devices/platform/soc/ca0c000\.qcom,cci/ca0c000\.qcom,cci:qcom,camera@2/video4linux/video[0-9]/wakeup[0-9]+(/.*)?                                       u:object_r:sysfs_wakeup:s0
+
+# HALs
+/(vendor|system/vendor)/bin/hw/vendor\.qti\.memory\.pasrmanager\@1\.0-service u:object_r:hal_pasrmanager_memory_qti_exec:s0
+/(vendor|system/vendor)/bin/hw/vendor\.qti\.psiclient\@1\.0-service           u:object_r:hal_psiservice_exec:s0
+/(vendor|system/vendor)/bin/vendor\.qti\.qspmhal@1\.0-service                 u:object_r:hal_qspmhal_default_exec:s0
