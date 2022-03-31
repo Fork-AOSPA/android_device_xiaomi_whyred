@@ -66,5 +66,8 @@ TARGET_MOUNT_POINTS_SYMLINKS := true
 # Treble
 BOARD_VNDK_VERSION := current
 
+# Vendor Security patch level
+VENDOR_SECURITY_PATCH := 2022-03-05
+
 # Inherit the proprietary files
 -include vendor/vendor/xiaomi/BoardConfigVendor.mk
