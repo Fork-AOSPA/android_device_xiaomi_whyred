@@ -75,6 +75,17 @@ PRODUCT_PROPERTY_OVERRIDES += \
 # Default is nosdcard, S/W button enabled in resource
 PRODUCT_CHARACTERISTICS := nosdcard
 
+# Init
+PRODUCT_PACKAGES += \
+    init.qcom.sensors.sh \
+    init.qti.dcvs.sh
+
+PRODUCT_PACKAGES += \
+    fstab.qcom \
+    init.device.rc \
+    init.target.rc \
+    init.target_dap.rc
+
 # Input
 PRODUCT_COPY_FILES += \
     $(call find-copy-subdir-files,*,$(LOCAL_PATH)/configs/keylayout/,$(TARGET_COPY_OUT_VENDOR)/usr/keylayout)
@@ -155,6 +166,7 @@ PRODUCT_COPY_FILES += \
 # QTI Common Components
 QTI_COMPONENTS += audio
 QTI_COMPONENTS += bt
+QTI_COMPONENTS += init
 QTI_COMPONENTS += media-legacy
 QTI_COMPONENTS += overlay
 QTI_COMPONENTS += wlan
