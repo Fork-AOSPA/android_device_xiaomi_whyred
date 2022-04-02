@@ -49,6 +49,10 @@ BOARD_KERNEL_IMAGE_NAME   += Image.gz-dtb
 KERNEL_DEFCONFIG          := vendor/whyred_defconfig
 KERNEL_SD_LLVM_SUPPORT    += true
 
+# Libinit
+TARGET_INIT_VENDOR_LIB := //$(DEVICE_PATH):libinit_sdm660
+TARGET_RECOVERY_DEVICE_MODULES := libinit_sdm660
+
 # Partitions
 BOARD_FLASH_BLOCK_SIZE := 262144 # (BOARD_KERNEL_PAGESIZE * 64)
 
