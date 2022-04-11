@@ -173,6 +173,14 @@ PRODUCT_PACKAGES += \
     WhyredSettingsOverlay \
     WhyredSystemUIOverlay
 
+# Paranoid Doze
+PRODUCT_PACKAGES += \
+    ParanoidDoze
+
+PRODUCT_SYSTEM_DEFAULT_PROPERTIES += \
+    ro.sensor.proximity=true \
+    ro.sensor.pickup=xiaomi.sensor.pickup
+
 # Public Libraries
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/public.libraries.txt:$(TARGET_COPY_OUT_VENDOR)/etc/public.libraries.txt
