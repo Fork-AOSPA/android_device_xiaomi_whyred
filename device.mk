@@ -195,6 +195,14 @@ PRODUCT_SYSTEM_DEFAULT_PROPERTIES += \
     vendor.vidc.dec.enable.downscalar=1 \
     vendor.vidc.enc.disable.pq=true
 
+# Net
+PRODUCT_PACKAGES += \
+    android.system.net.netd@1.1.vendor
+
+# Neuralnetworks
+PRODUCT_PACKAGES += \
+    android.hardware.neuralnetworks@1.3.vendor
+
 # OMX
 PRODUCT_PACKAGES += \
     libOmxCore \
