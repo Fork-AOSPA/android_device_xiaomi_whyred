@@ -1,0 +1,3 @@
+attribute hal_mem_pasrmanager;
+attribute hal_mem_pasrmanager_client;
+attribute hal_mem_pasrmanager_server;
