@@ -155,6 +155,13 @@ PRODUCT_PACKAGES += \
     android.hardware.health@2.1-impl-qti \
     android.hardware.health@2.1-service
 
+# HIDL
+PRODUCT_PACKAGES += \
+    libhwbinder \
+    libhidltransport \
+    libhwbinder.vendor \
+    libhidltransport.vendor
+
 # Init
 PRODUCT_PACKAGES += \
     init.qcom.sensors.sh \
