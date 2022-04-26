@@ -1,4 +1,7 @@
 soong_namespace {
+    imports: [
+        "kernel/msm-4.19",
+    ]
 }
 
 prebuilt_hidl_interfaces {
