@@ -38,6 +38,7 @@ TARGET_KERNEL_CONFIG := vendor/whyred_defconfig
 TARGET_KERNEL_ARCH  := arm64
 KERNEL_LLVM_SUPPORT := true
 KERNEL_SD_LLVM_SUPPORT := true
+KERNEL_CUSTOM_LLVM := true
 KERNEL_MODULES_INSTALL := vendor
 
 # QCOM hardware
