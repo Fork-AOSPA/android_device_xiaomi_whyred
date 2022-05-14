@@ -1,0 +1,3 @@
+ifelse(board_excludes_fuseblk_sepolicy, `true', ,
+genfscon fuseblk / u:object_r:vfat:s0
+)
