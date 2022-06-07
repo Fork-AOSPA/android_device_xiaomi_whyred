@@ -1,4 +1,4 @@
-/* Copyright (c) 2011-2015, 2018-2020 The Linux Foundation. All rights reserved.
+/* Copyright (c) 2011-2015, 2018 The Linux Foundation. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
@@ -59,15 +59,13 @@ static uint32_t DEBUG_LEVEL = 0xff;
 static uint32_t TIMESTAMP = 0;
 static uint32_t DATUM_TYPE = 0;
 static bool sVendorEnhanced = true;
-static uint32_t sLogBufferEnabled = 0;
 
 /* Parameter spec table */
 static const loc_param_s_type loc_param_table[] =
 {
-    {"DEBUG_LEVEL",             &DEBUG_LEVEL,        NULL, 'n'},
-    {"TIMESTAMP",               &TIMESTAMP,          NULL, 'n'},
-    {"DATUM_TYPE",              &DATUM_TYPE,         NULL, 'n'},
-    {"LOG_BUFFER_ENABLED",      &sLogBufferEnabled,  NULL, 'n'},
+    {"DEBUG_LEVEL",        &DEBUG_LEVEL,        NULL,    'n'},
+    {"TIMESTAMP",          &TIMESTAMP,          NULL,    'n'},
+    {"DATUM_TYPE",         &DATUM_TYPE,         NULL,    'n'},
 };
 static const int loc_param_num = sizeof(loc_param_table) / sizeof(loc_param_s_type);
 
@@ -89,9 +87,6 @@ const char LOC_PATH_SAP_CONF[] = LOC_PATH_SAP_CONF_STR;
 const char LOC_PATH_APDR_CONF[] = LOC_PATH_APDR_CONF_STR;
 const char LOC_PATH_XTWIFI_CONF[] = LOC_PATH_XTWIFI_CONF_STR;
 const char LOC_PATH_QUIPC_CONF[] = LOC_PATH_QUIPC_CONF_STR;
-const char LOC_PATH_ANT_CORR[] = LOC_PATH_ANT_CORR_STR;
-const char LOC_PATH_SLIM_CONF[] = LOC_PATH_SLIM_CONF_STR;
-const char LOC_PATH_VPE_CONF[] = LOC_PATH_VPE_CONF_STR;
 
 bool isVendorEnhanced() {
     return sVendorEnhanced;
@@ -144,9 +139,7 @@ RETURN VALUE
 SIDE EFFECTS
    N/A
 ===========================================================================*/
-int loc_set_config_entry(const loc_param_s_type* config_entry,
-                        loc_param_v_type* config_value,
-                        uint16_t string_len = LOC_MAX_PARAM_STRING)
+int loc_set_config_entry(const loc_param_s_type* config_entry, loc_param_v_type* config_value)
 {
     int ret=-1;
     if(NULL == config_entry || NULL == config_value)
@@ -168,7 +161,7 @@ int loc_set_config_entry(const loc_param_s_type* config_entry,
             else {
                 strlcpy((char*) config_entry->param_ptr,
                         config_value->param_str_value,
-                        string_len);
+                        LOC_MAX_PARAM_STRING);
             }
             /* Log INI values */
             LOC_LOGD("%s: PARAM %s = %s", __FUNCTION__,
@@ -235,8 +228,7 @@ SIDE EFFECTS
    N/A
 ===========================================================================*/
 int loc_fill_conf_item(char* input_buf,
-                       const loc_param_s_type* config_table,
-                       uint32_t table_length, uint16_t string_len = LOC_MAX_PARAM_STRING)
+                       const loc_param_s_type* config_table, uint32_t table_length)
 {
     int ret = 0;
 
@@ -249,7 +241,7 @@ int loc_fill_conf_item(char* input_buf,
         config_value.param_name = strtok_r(input_buf, "=", &lasts);
         /* skip lines that do not contain "=" */
         if (config_value.param_name) {
-            config_value.param_str_value = strtok_r(NULL, "\0", &lasts);
+            config_value.param_str_value = strtok_r(NULL, "=", &lasts);
 
             /* skip lines that do not contain two operands */
             if (config_value.param_str_value) {
@@ -273,7 +265,7 @@ int loc_fill_conf_item(char* input_buf,
 
                 for(uint32_t i = 0; NULL != config_table && i < table_length; i++)
                 {
-                    if(!loc_set_config_entry(&config_table[i], &config_value, string_len)) {
+                    if(!loc_set_config_entry(&config_table[i], &config_value)) {
                         ret += 1;
                     }
                 }
@@ -285,7 +277,7 @@ int loc_fill_conf_item(char* input_buf,
 }
 
 /*===========================================================================
-FUNCTION loc_read_conf_r_long (repetitive)
+FUNCTION loc_read_conf_r (repetitive)
 
 DESCRIPTION
    Reads the specified configuration file and sets defined values based on
@@ -313,13 +305,11 @@ RETURN VALUE
 SIDE EFFECTS
    N/A
 ===========================================================================*/
-int loc_read_conf_r_long(FILE *conf_fp, const loc_param_s_type* config_table,
-                         uint32_t table_length, uint16_t string_len)
+int loc_read_conf_r(FILE *conf_fp, const loc_param_s_type* config_table, uint32_t table_length)
 {
     int ret=0;
-    char input_buf[string_len];  /* declare a char array */
-    unsigned int num_params=table_length;
 
+    unsigned int num_params=table_length;
     if(conf_fp == NULL) {
         LOC_LOGE("%s:%d]: ERROR: File pointer is NULL\n", __func__, __LINE__);
         ret = -1;
@@ -335,15 +325,17 @@ int loc_read_conf_r_long(FILE *conf_fp, const loc_param_s_type* config_table,
         }
     }
 
+    char input_buf[LOC_MAX_PARAM_LINE];  /* declare a char array */
+
     LOC_LOGD("%s:%d]: num_params: %d\n", __func__, __LINE__, num_params);
     while(num_params)
     {
-        if(!fgets(input_buf, string_len, conf_fp)) {
+        if(!fgets(input_buf, LOC_MAX_PARAM_LINE, conf_fp)) {
             LOC_LOGD("%s:%d]: fgets returned NULL\n", __func__, __LINE__);
             break;
         }
 
-        num_params -= loc_fill_conf_item(input_buf, config_table, table_length, string_len);
+        num_params -= loc_fill_conf_item(input_buf, config_table, table_length);
     }
 
 err:
@@ -351,7 +343,7 @@ err:
 }
 
 /*===========================================================================
-FUNCTION loc_udpate_conf_long
+FUNCTION loc_udpate_conf
 
 DESCRIPTION
    Parses the passed in buffer for configuration items, and update the table
@@ -376,9 +368,8 @@ RETURN VALUE
 SIDE EFFECTS
    N/A
 ===========================================================================*/
-int loc_update_conf_long(const char* conf_data, int32_t length,
-                         const loc_param_s_type* config_table,
-                         uint32_t table_length, uint16_t string_len)
+int loc_update_conf(const char* conf_data, int32_t length,
+                    const loc_param_s_type* config_table, uint32_t table_length)
 {
     int ret = -1;
 
@@ -401,8 +392,7 @@ int loc_update_conf_long(const char* conf_data, int32_t length,
             LOC_LOGD("%s:%d]: num_params: %d\n", __func__, __LINE__, num_params);
             while(num_params && input_buf) {
                 ret++;
-                num_params -=
-                        loc_fill_conf_item(input_buf, config_table, table_length, string_len);
+                num_params -= loc_fill_conf_item(input_buf, config_table, table_length);
                 input_buf = strtok_r(NULL, "\n", &saveptr);
             }
             free(conf_copy);
@@ -413,7 +403,7 @@ int loc_update_conf_long(const char* conf_data, int32_t length,
 }
 
 /*===========================================================================
-FUNCTION loc_read_conf_long
+FUNCTION loc_read_conf
 
 DESCRIPTION
    Reads the specified configuration file and sets defined values based on
@@ -434,26 +424,23 @@ RETURN VALUE
 SIDE EFFECTS
    N/A
 ===========================================================================*/
-void loc_read_conf_long(const char* conf_file_name, const loc_param_s_type* config_table,
-                        uint32_t table_length, uint16_t string_len)
+void loc_read_conf(const char* conf_file_name, const loc_param_s_type* config_table,
+                   uint32_t table_length)
 {
     FILE *conf_fp = NULL;
 
-    log_buffer_init(false);
     if((conf_fp = fopen(conf_file_name, "r")) != NULL)
     {
         LOC_LOGD("%s: using %s", __FUNCTION__, conf_file_name);
         if(table_length && config_table) {
-            loc_read_conf_r_long(conf_fp, config_table, table_length, string_len);
+            loc_read_conf_r(conf_fp, config_table, table_length);
             rewind(conf_fp);
         }
-        loc_read_conf_r_long(conf_fp, loc_param_table, loc_param_num, string_len);
+        loc_read_conf_r(conf_fp, loc_param_table, loc_param_num);
         fclose(conf_fp);
     }
     /* Initialize logging mechanism with parsed data */
     loc_logger_init(DEBUG_LEVEL, TIMESTAMP);
-    log_buffer_init(sLogBufferEnabled);
-    log_tag_level_map_init();
 }
 
 /*=============================================================================
@@ -473,9 +460,6 @@ void loc_read_conf_long(const char* conf_file_name, const loc_param_s_type* conf
 #define CONFIG_MASK_AUTOPLATFORM_ALL     0x10
 #define CONFIG_MASK_AUTOPLATFORM_FOUND   0x20
 #define CONFIG_MASK_AUTOPLATFORM_CHECK   0x30
-#define CONFIG_MASK_SOCID_ALL            0x40
-#define CONFIG_MASK_SOCID_FOUND          0x80
-#define CONFIG_MASK_SOCID_CHECK          0xc0
 
 #define LOC_FEATURE_MASK_GTP_WIFI_BASIC            0x01
 #define LOC_FEATURE_MASK_GTP_WIFI_PREMIUM          0X02
@@ -499,8 +483,6 @@ typedef struct {
     unsigned int loc_feature_mask;
     char platform_list[LOC_MAX_PARAM_STRING];
     char baseband[LOC_MAX_PARAM_STRING];
-    char low_ram_targets[LOC_MAX_PARAM_STRING];
-    char soc_id_list[LOC_MAX_PARAM_STRING];
     unsigned int sglte_target;
     char feature_gtp_mode[LOC_MAX_PARAM_STRING];
     char feature_gtp_waa[LOC_MAX_PARAM_STRING];
@@ -541,9 +523,7 @@ static const loc_param_s_type loc_process_conf_parameter_table[] = {
     {"PREMIUM_FEATURE",            &conf.premium_feature,          NULL, 'n'},
     {"IZAT_FEATURE_MASK",          &conf.loc_feature_mask,         NULL, 'n'},
     {"PLATFORMS",                  &conf.platform_list,            NULL, 's'},
-    {"SOC_IDS",                    &conf.soc_id_list,            NULL, 's'},
     {"BASEBAND",                   &conf.baseband,                 NULL, 's'},
-    {"LOW_RAM_TARGETS",            &conf.low_ram_targets,          NULL, 's'},
     {"HARDWARE_TYPE",              &conf.auto_platform,            NULL, 's'},
     {"VENDOR_ENHANCED_PROCESS",    &conf.vendor_enhanced_process,  NULL, 'n'},
 };
@@ -581,14 +561,13 @@ int loc_read_process_conf(const char* conf_file_name, uint32_t * process_count_p
     gid_t gid_list[LOC_PROCESS_MAX_NUM_GROUPS];
     char *split_strings[MAX_NUM_STRINGS];
     int name_length=0, group_list_length=0, platform_length=0, baseband_length=0, ngroups=0, ret=0;
-    int auto_platform_length = 0, soc_id_list_length=0;
+    int auto_platform_length = 0;
     int group_index=0, nstrings=0, status_length=0;
     FILE* conf_fp = nullptr;
     char platform_name[PROPERTY_VALUE_MAX], baseband_name[PROPERTY_VALUE_MAX];
-    int low_ram_target=0;
-    char autoplatform_name[PROPERTY_VALUE_MAX], socid_value[PROPERTY_VALUE_MAX];
+    char autoplatform_name[PROPERTY_VALUE_MAX];
     unsigned int loc_service_mask=0;
-    unsigned char config_mask = 0;
+    char config_mask = 0;
     unsigned char proc_list_length=0;
     int gtp_cell_ap_enabled = 0;
     char arg_gtp_waa[LOC_PROCESS_MAX_ARG_STR_LENGTH] = "--";
@@ -618,26 +597,18 @@ int loc_read_process_conf(const char* conf_file_name, uint32_t * process_count_p
     loc_get_target_baseband(baseband_name, sizeof(baseband_name));
     //Identify if this is an automotive platform
     loc_get_auto_platform_name(autoplatform_name,sizeof(autoplatform_name));
-    //Identify if this is a low ram target from ro.config.low_ram property
-    low_ram_target = loc_identify_low_ram_target();
-    // Get the soc-id for this device.
-    loc_get_device_soc_id(socid_value, sizeof(socid_value));
 
     UTIL_READ_CONF(conf_file_name, loc_feature_conf_table);
 
     //Set service mask for GTP_MODE
-    if (strcmp(conf.feature_gtp_mode, "DISABLED") == 0) {
+    if(strcmp(conf.feature_gtp_mode, "DISABLED") == 0) {
         LOC_LOGD("%s:%d]: GTP MODE DISABLED", __func__, __LINE__);
     }
-    else if (strcmp(conf.feature_gtp_mode, "LEGACY_WWAN") == 0) {
+    else if(strcmp(conf.feature_gtp_mode, "LEGACY_WWAN") == 0) {
         LOC_LOGD("%s:%d]: Setting GTP MODE to mode: LEGACY_WWAN", __func__, __LINE__);
         loc_service_mask |= LOC_FEATURE_MASK_GTP_MODEM_CELL_BASIC;
     }
-    else if (strcmp(conf.feature_gtp_mode, "SDK") == 0) {
-        LOC_LOGD("%s:%d]: Setting GTP MODE to mode: SDK", __func__, __LINE__);
-        loc_service_mask |= LOC_FEATURE_MASK_GTP_WIFI_BASIC;
-    }
-    else if (strcmp(conf.feature_gtp_mode, "SDK_WIFI") == 0) {
+    else if(strcmp(conf.feature_gtp_mode, "SDK") == 0) {
         LOC_LOGD("%s:%d]: Setting GTP MODE to mode: SDK", __func__, __LINE__);
         loc_service_mask |= LOC_FEATURE_MASK_GTP_WIFI_BASIC;
     }
@@ -647,11 +618,11 @@ int loc_read_process_conf(const char* conf_file_name, uint32_t * process_count_p
                  " Setting GTP WIFI to default mode: DISABLED", __func__, __LINE__);
     }
     //Set service mask for GTP_WAA
-    if (strcmp(conf.feature_gtp_waa, "BASIC") == 0) {
+    if(strcmp(conf.feature_gtp_waa, "BASIC") == 0) {
       LOC_LOGD("%s:%d]: Setting GTP WAA to mode: BASIC", __func__, __LINE__);
       loc_service_mask |= LOC_FEATURE_MASK_GTP_WAA_BASIC;
     }
-    else if (strcmp(conf.feature_gtp_waa, "DISABLED") == 0) {
+    else if(strcmp(conf.feature_gtp_waa, "DISABLED") == 0) {
       LOC_LOGD("%s:%d]: GTP WAA DISABLED", __func__, __LINE__);
     }
     //conf file has a garbage value
@@ -661,26 +632,19 @@ int loc_read_process_conf(const char* conf_file_name, uint32_t * process_count_p
     }
 
     //Set service mask for SAP
-    if(strcmp(conf.feature_sap, "PREMIUM") == 0 ||
-       strcmp(conf.feature_sap, "PREMIUM_ENV_AIDING") == 0) {
+    if(strcmp(conf.feature_sap, "PREMIUM") == 0) {
         LOC_LOGD("%s:%d]: Setting SAP to mode: PREMIUM", __func__, __LINE__);
         loc_service_mask |= LOC_FEATURE_MASK_SAP_PREMIUM;
     }
-    else if (strcmp(conf.feature_sap, "BASIC") == 0) {
+    else if(strcmp(conf.feature_sap, "BASIC") == 0) {
         LOC_LOGD("%s:%d]: Setting SAP to mode: BASIC", __func__, __LINE__);
         loc_service_mask |= LOC_FEATURE_MASK_SAP_BASIC;
     }
-    else if (strcmp(conf.feature_sap, "MODEM_DEFAULT") == 0) {
+    else if(strcmp(conf.feature_sap, "MODEM_DEFAULT") == 0) {
         LOC_LOGD("%s:%d]: Setting SAP to mode: MODEM_DEFAULT", __func__, __LINE__);
-        loc_service_mask |= LOC_FEATURE_MASK_SAP_BASIC;
     }
-    else if (strcmp(conf.feature_sap, "DISABLED") == 0) {
-#ifdef USE_GLIB
-        /* Enable slim_daemon even when SAP is set to DISABLED*/
-        loc_service_mask |= LOC_FEATURE_MASK_SAP_BASIC;
-#else
+    else if(strcmp(conf.feature_sap, "DISABLED") == 0) {
         LOC_LOGD("%s:%d]: Setting SAP to mode: DISABLED", __func__, __LINE__);
-#endif
     }
     else {
        LOC_LOGE("%s:%d]: Unrecognized value for SAP Mode."\
@@ -689,56 +653,56 @@ int loc_read_process_conf(const char* conf_file_name, uint32_t * process_count_p
     }
 
     // Set service mask for ODCPI
-    if (strcmp(conf.feature_odcpi, "BASIC") == 0) {
+    if(strcmp(conf.feature_odcpi, "BASIC") == 0) {
         LOC_LOGD("%s:%d]: Setting ODCPI to mode: BASIC", __func__, __LINE__);
         loc_service_mask |= LOC_FEATURE_MASK_ODCPI;
     }
-    else if (strcmp(conf.feature_odcpi, "DISABLED") == 0) {
+    else if(strcmp(conf.feature_odcpi, "DISABLED") == 0) {
         LOC_LOGD("%s:%d]: Setting ODCPI to mode: DISABLED", __func__, __LINE__);
     }
-    else if (strcmp(conf.feature_odcpi, "PREMIUM") == 0) {
+    else if(strcmp(conf.feature_odcpi, "PREMIUM") == 0) {
         LOC_LOGD("%s:%d]: Unrecognized value for ODCPI mode."\
             "Setting ODCPI to default mode: BASIC", __func__, __LINE__);
         loc_service_mask |= LOC_FEATURE_MASK_ODCPI;
     }
 
     // Set service mask for FREE_WIFI_SCAN_INJECT
-    if (strcmp(conf.feature_free_wifi_scan_inject, "BASIC") == 0) {
+    if(strcmp(conf.feature_free_wifi_scan_inject, "BASIC") == 0) {
         LOC_LOGD("%s:%d]: Setting FREE_WIFI_SCAN_INJECT to mode: BASIC", __func__, __LINE__);
         loc_service_mask |= LOC_FEATURE_MASK_FREE_WIFI_SCAN_INJECT;
     }
-    else if (strcmp(conf.feature_free_wifi_scan_inject, "DISABLED") == 0) {
+    else if(strcmp(conf.feature_free_wifi_scan_inject, "DISABLED") == 0) {
         LOC_LOGD("%s:%d]: Setting FREE_WIFI_SCAN_INJECT to mode: DISABLED", __func__, __LINE__);
     }
-    else if (strcmp(conf.feature_free_wifi_scan_inject, "PREMIUM") == 0) {
+    else if(strcmp(conf.feature_free_wifi_scan_inject, "PREMIUM") == 0) {
         LOC_LOGD("%s:%d]: Unrecognized value for FREE_WIFI_SCAN_INJECT mode."\
             "Setting FREE_WIFI_SCAN_INJECT to default mode: BASIC", __func__, __LINE__);
         loc_service_mask |= LOC_FEATURE_MASK_FREE_WIFI_SCAN_INJECT;
     }
 
     // Set service mask for SUPL_WIFI
-    if (strcmp(conf.feature_supl_wifi, "BASIC") == 0) {
+    if(strcmp(conf.feature_supl_wifi, "BASIC") == 0) {
         LOC_LOGD("%s:%d]: Setting SUPL_WIFI to mode: BASIC", __func__, __LINE__);
         loc_service_mask |= LOC_FEATURE_MASK_SUPL_WIFI;
     }
-    else if (strcmp(conf.feature_supl_wifi, "DISABLED") == 0) {
+    else if(strcmp(conf.feature_supl_wifi, "DISABLED") == 0) {
         LOC_LOGD("%s:%d]: Setting SUPL_WIFI to mode: DISABLED", __func__, __LINE__);
     }
-    else if (strcmp(conf.feature_supl_wifi, "PREMIUM") == 0) {
+    else if(strcmp(conf.feature_supl_wifi, "PREMIUM") == 0) {
         LOC_LOGD("%s:%d]: Unrecognized value for SUPL_WIFI mode."\
             "Setting SUPL_WIFI to default mode: BASIC", __func__, __LINE__);
         loc_service_mask |= LOC_FEATURE_MASK_SUPL_WIFI;
     }
 
     // Set service mask for WIFI_SUPPLICANT_INFO
-    if (strcmp(conf.feature_wifi_supplicant_info, "BASIC") == 0) {
+    if(strcmp(conf.feature_wifi_supplicant_info, "BASIC") == 0) {
         LOC_LOGD("%s:%d]: Setting WIFI_SUPPLICANT_INFO to mode: BASIC", __func__, __LINE__);
         loc_service_mask |= LOC_FEATURE_MASK_WIFI_SUPPLICANT_INFO;
     }
-    else if (strcmp(conf.feature_wifi_supplicant_info, "DISABLED") == 0) {
+    else if(strcmp(conf.feature_wifi_supplicant_info, "DISABLED") == 0) {
         LOC_LOGD("%s:%d]: Setting WIFI_SUPPLICANT_INFO to mode: DISABLED", __func__, __LINE__);
     }
-    else if (strcmp(conf.feature_wifi_supplicant_info, "PREMIUM") == 0) {
+    else if(strcmp(conf.feature_wifi_supplicant_info, "PREMIUM") == 0) {
         LOC_LOGD("%s:%d]: Unrecognized value for WIFI_SUPPLICANT_INFO mode."\
             "Setting LOC_FEATURE_MASK_WIFI_SUPPLICANT_INFO to default mode: BASIC", __func__, __LINE__);
         loc_service_mask |= LOC_FEATURE_MASK_WIFI_SUPPLICANT_INFO;
@@ -805,10 +769,9 @@ int loc_read_process_conf(const char* conf_file_name, uint32_t * process_count_p
         baseband_length = (int)strlen(conf.baseband);
         status_length = (int)strlen(conf.proc_status);
         auto_platform_length = (int)strlen(conf.auto_platform);
-        soc_id_list_length = (int)strlen(conf.soc_id_list);
 
         if(!name_length || !group_list_length || !platform_length ||
-           !baseband_length || !status_length || !auto_platform_length || !soc_id_list_length) {
+           !baseband_length || !status_length || !auto_platform_length) {
             LOC_LOGE("%s:%d]: Error: i: %d; One of the parameters not specified in conf file",
                      __func__, __LINE__, i);
             continue;
@@ -821,13 +784,13 @@ int loc_read_process_conf(const char* conf_file_name, uint32_t * process_count_p
             continue;
         }
 
-        if (strcmp(conf.proc_status, "DISABLED") == 0) {
+        if(strcmp(conf.proc_status, "DISABLED") == 0) {
             LOC_LOGD("%s:%d]: Process %s is disabled in conf file",
                      __func__, __LINE__, conf.proc_name);
             child_proc[j].proc_status = DISABLED_FROM_CONF;
             continue;
         }
-        else if (strcmp(conf.proc_status, "ENABLED") == 0) {
+        else if(strcmp(conf.proc_status, "ENABLED") == 0) {
             LOC_LOGD("%s:%d]: Process %s is enabled in conf file",
                      __func__, __LINE__, conf.proc_name);
         }
@@ -852,7 +815,7 @@ int loc_read_process_conf(const char* conf_file_name, uint32_t * process_count_p
         }
 
         nstrings = loc_util_split_string(conf.platform_list, split_strings, MAX_NUM_STRINGS, ' ');
-        if (strcmp("all", split_strings[0]) == 0) {
+        if(strcmp("all", split_strings[0]) == 0) {
             if (nstrings == 1 || (nstrings == 2 && (strcmp("exclude", split_strings[1]) == 0))) {
                 LOC_LOGD("%s:%d]: Enabled for all targets\n", __func__, __LINE__);
                 config_mask |= CONFIG_MASK_TARGET_ALL;
@@ -860,7 +823,7 @@ int loc_read_process_conf(const char* conf_file_name, uint32_t * process_count_p
             else if (nstrings > 2 && (strcmp("exclude", split_strings[1]) == 0)) {
                 config_mask |= CONFIG_MASK_TARGET_FOUND;
                 for (i=2; i<nstrings; i++) {
-                    if (strcmp(platform_name, split_strings[i]) == 0) {
+                    if(strcmp(platform_name, split_strings[i]) == 0) {
                         LOC_LOGD("%s:%d]: Disabled platform %s\n", __func__, __LINE__, platform_name);
                         config_mask &= ~CONFIG_MASK_TARGET_FOUND;
                         break;
@@ -870,7 +833,7 @@ int loc_read_process_conf(const char* conf_file_name, uint32_t * process_count_p
         }
         else {
             for(i=0; i<nstrings; i++) {
-                if (strcmp(platform_name, split_strings[i]) == 0) {
+                if(strcmp(platform_name, split_strings[i]) == 0) {
                     LOC_LOGD("%s:%d]: Matched platform: %s\n",
                              __func__, __LINE__, split_strings[i]);
                     config_mask |= CONFIG_MASK_TARGET_FOUND;
@@ -879,36 +842,8 @@ int loc_read_process_conf(const char* conf_file_name, uint32_t * process_count_p
             }
         }
 
-        // SOC Id's check
-        nstrings = loc_util_split_string(conf.soc_id_list, split_strings, MAX_NUM_STRINGS, ' ');
-        if (strcmp("all", split_strings[0]) == 0) {
-            if (nstrings == 1 || (nstrings == 2 && (strcmp("exclude", split_strings[1]) == 0))) {
-                LOC_LOGd("Enabled for all SOC ids\n");
-                config_mask |= CONFIG_MASK_SOCID_ALL;
-            }
-            else if (nstrings > 2 && (strcmp("exclude", split_strings[1]) == 0)) {
-                config_mask |= CONFIG_MASK_SOCID_FOUND;
-                for (i = 2; i < nstrings; i++) {
-                    if (strcmp(socid_value, split_strings[i]) == 0) {
-                        LOC_LOGd("Disabled for SOC id %s\n", socid_value);
-                        config_mask &= ~CONFIG_MASK_SOCID_FOUND;
-                        break;
-                    }
-                }
-            }
-        }
-        else {
-            for (i = 0; i < nstrings; i++) {
-                if (strcmp(socid_value, split_strings[i]) == 0) {
-                    LOC_LOGd("Matched SOC id : %s\n", split_strings[i]);
-                    config_mask |= CONFIG_MASK_SOCID_FOUND;
-                    break;
-                }
-            }
-        }
-
         nstrings = loc_util_split_string(conf.baseband, split_strings, MAX_NUM_STRINGS, ' ');
-        if (strcmp("all", split_strings[0]) == 0) {
+        if(strcmp("all", split_strings[0]) == 0) {
             if (nstrings == 1 || (nstrings == 2 && (strcmp("exclude", split_strings[1]) == 0))) {
                 LOC_LOGD("%s:%d]: Enabled for all basebands\n", __func__, __LINE__);
                 config_mask |= CONFIG_MASK_BASEBAND_ALL;
@@ -916,7 +851,7 @@ int loc_read_process_conf(const char* conf_file_name, uint32_t * process_count_p
             else if (nstrings > 2 && (strcmp("exclude", split_strings[1]) == 0)) {
                 config_mask |= CONFIG_MASK_BASEBAND_FOUND;
                 for (i=2; i<nstrings; i++) {
-                    if (strcmp(baseband_name, split_strings[i]) == 0) {
+                    if(strcmp(baseband_name, split_strings[i]) == 0) {
                         LOC_LOGD("%s:%d]: Disabled band %s\n", __func__, __LINE__, baseband_name);
                         config_mask &= ~CONFIG_MASK_BASEBAND_FOUND;
                         break;
@@ -926,7 +861,7 @@ int loc_read_process_conf(const char* conf_file_name, uint32_t * process_count_p
         }
         else {
             for(i=0; i<nstrings; i++) {
-                if (strcmp(baseband_name, split_strings[i]) == 0) {
+                if(strcmp(baseband_name, split_strings[i]) == 0) {
                     LOC_LOGD("%s:%d]: Matched baseband: %s\n",
                              __func__, __LINE__, split_strings[i]);
                     config_mask |= CONFIG_MASK_BASEBAND_FOUND;
@@ -944,13 +879,13 @@ int loc_read_process_conf(const char* conf_file_name, uint32_t * process_count_p
         }
 
         nstrings = loc_util_split_string(conf.auto_platform, split_strings, MAX_NUM_STRINGS, ' ');
-        if (strcmp("all", split_strings[0]) == 0) {
+        if(strcmp("all", split_strings[0]) == 0) {
             LOC_LOGD("%s:%d]: Enabled for all auto platforms\n", __func__, __LINE__);
             config_mask |= CONFIG_MASK_AUTOPLATFORM_ALL;
         }
         else {
             for(i=0; i<nstrings; i++) {
-                if (strcmp(autoplatform_name, split_strings[i]) == 0) {
+                if(strcmp(autoplatform_name, split_strings[i]) == 0) {
                     LOC_LOGD("%s:%d]: Matched auto platform: %s\n",
                              __func__, __LINE__, split_strings[i]);
                     config_mask |= CONFIG_MASK_AUTOPLATFORM_FOUND;
@@ -959,17 +894,9 @@ int loc_read_process_conf(const char* conf_file_name, uint32_t * process_count_p
             }
         }
 
-        nstrings = loc_util_split_string(conf.low_ram_targets, split_strings, MAX_NUM_STRINGS, ' ');
-        if (!strcmp("DISABLED", split_strings[0]) && low_ram_target) {
-            LOC_LOGd("Disabled for low ram targets\n");
-            child_proc[j].proc_status = DISABLED;
-            continue;
-        }
-
         if((config_mask & CONFIG_MASK_TARGET_CHECK) &&
            (config_mask & CONFIG_MASK_BASEBAND_CHECK) &&
            (config_mask & CONFIG_MASK_AUTOPLATFORM_CHECK) &&
-           (config_mask & CONFIG_MASK_SOCID_CHECK) &&
            (child_proc[j].proc_status != DISABLED_FROM_CONF) &&
            (child_proc[j].proc_status != DISABLED_VIA_VENDOR_ENHANCED_CHECK)) {
 
@@ -981,7 +908,7 @@ int loc_read_process_conf(const char* conf_file_name, uint32_t * process_count_p
             i = 0;
             char* temp_arg = ('/' == child_proc[j].name[0][0]) ?
                 (strrchr(child_proc[j].name[0], '/') + 1) : child_proc[j].name[0];
-            strlcpy (child_proc[j].args[i++], temp_arg, sizeof (child_proc[j].args[0]));
+            strlcpy (child_proc[j].args[i++], temp_arg, sizeof (child_proc[j].args[i++]));
 
             if(conf.premium_feature) {
                if(conf.loc_feature_mask & loc_service_mask) {
