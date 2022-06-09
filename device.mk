@@ -167,6 +167,10 @@ PRODUCT_PACKAGES += \
 PRODUCT_PROPERTY_OVERRIDES += \
     drm.service.enabled=true
 
+# Dynamic partitions
+PRODUCT_USE_DYNAMIC_PARTITIONS := true
+PRODUCT_RETROFIT_DYNAMIC_PARTITIONS := true
+
 # Fingerprint
 PRODUCT_PACKAGES += \
     android.hardware.biometrics.fingerprint@2.1 \
