@@ -6,6 +6,10 @@
 
 DEVICE_PATH := device/xiaomi/whyred
 
+# Dynamic Partition
+PRODUCT_USE_DYNAMIC_PARTITIONS := true
+PRODUCT_RETROFIT_DYNAMIC_PARTITIONS := true
+
 # Enable updatable Apex
 OVERRIDE_PRODUCT_COMPRESSED_APEX := false
 $(call inherit-product, $(SRC_TARGET_DIR)/product/updatable_apex.mk)
