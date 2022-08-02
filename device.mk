@@ -287,6 +287,12 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     android.hardware.neuralnetworks@1.1.vendor
 
+# Ntfs-3g
+PRODUCT_PACKAGES += \
+    mkfs.ntfs \
+    fsck.ntfs \
+    mount.ntfs
+
 # OMX
 PRODUCT_PACKAGES += \
     libc2dcolorconvert \
