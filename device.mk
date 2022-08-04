@@ -33,7 +33,8 @@ TARGET_COMMON_QTI_COMPONENTS := \
     overlay \
     perf \
     telephony \
-    usb
+    usb \
+    wlan
 
 # Soong namespaces
 PRODUCT_SOONG_NAMESPACES += \
@@ -378,19 +379,9 @@ PRODUCT_PACKAGES += \
 # Vibrator
 $(call inherit-product, vendor/qcom/opensource/vibrator/vibrator-vendor-product.mk)
 
-# Wifi
-PRODUCT_PACKAGES += \
-    android.hardware.wifi@1.0-service \
-    hostapd \
-    libwifi-hal-qcom \
-    libwpa_client \
-    wpa_supplicant \
-    wpa_supplicant.conf
-
+# WLAN
 PRODUCT_COPY_FILES += \
-    $(DEVICE_PATH)/wifi/p2p_supplicant_overlay.conf:$(TARGET_COPY_OUT_VENDOR)/etc/wifi/p2p_supplicant_overlay.conf \
-    $(DEVICE_PATH)/wifi/wpa_supplicant_overlay.conf:$(TARGET_COPY_OUT_VENDOR)/etc/wifi/wpa_supplicant_overlay.conf \
-    $(DEVICE_PATH)/wifi/WCNSS_qcom_cfg.ini:$(TARGET_COPY_OUT_VENDOR)/etc/wifi/WCNSS_qcom_cfg.ini
+    $(call find-copy-subdir-files,*,$(DEVICE_PATH)/configs/wlan/,$(TARGET_COPY_OUT_VENDOR)/etc/wifi)
 
 # Inherit the proprietary files
 $(call inherit-product, vendor/xiaomi/whyred/whyred-vendor.mk)
