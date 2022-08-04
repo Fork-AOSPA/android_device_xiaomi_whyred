@@ -27,7 +27,9 @@ TARGET_KERNEL_VERSION := 4.19
 
 # Overlay
 PRODUCT_PACKAGES += \
-    WhyredFrameworksOverlay
+    WhyredFrameworksOverlay \
+    WhyredSettingsOverlay \
+    WhyredSystemUIOverlay
 
 # Public Libraries
 PRODUCT_COPY_FILES += \
