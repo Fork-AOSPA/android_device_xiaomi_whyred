@@ -18,6 +18,10 @@ $(call inherit-product, $(SRC_TARGET_DIR)/product/updatable_apex.mk)
 TARGET_BOARD_PLATFORM := sdm660
 TARGET_KERNEL_VERSION := 4.19
 
+# Overlay
+PRODUCT_PACKAGES += \
+    WhyredFrameworksOverlay
+
 # QTI Components
 TARGET_COMMON_QTI_COMPONENTS := \
     audio \
