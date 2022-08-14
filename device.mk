@@ -26,14 +26,20 @@ PRODUCT_PACKAGES += \
 
 # QTI Components
 TARGET_COMMON_QTI_COMPONENTS := \
+    adreno-legacy \
     audio \
+    av \
     bt \
+    display \
     gps \
     init \
+    media-legacy \
     overlay \
     perf \
     telephony \
     usb \
+    vibrator \
+    wfd-legacy \
     wlan
 
 # Soong namespaces
@@ -121,6 +127,13 @@ PRODUCT_PACKAGES += \
 # Capability Configstore
 PRODUCT_PACKAGES += \
     vendor.qti.hardware.capabilityconfigstore@1.0.vendor
+
+# Codec2 modules
+PRODUCT_PACKAGES += \
+    com.android.media.swcodec \
+    libsfplugin_ccodec \
+    android.hardware.media.c2@1.0.vendor \
+    android.hardware.media.c2@1.1.vendor
 
 # Component overrides
 PRODUCT_COPY_FILES += \
@@ -267,15 +280,16 @@ PRODUCT_PACKAGES += \
     android.hardware.light@2.0-service.xiaomi_sdm660
 
 # Media
-PRODUCT_COPY_FILES += \
-    $(DEVICE_PATH)/configs/media_codecs.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs.xml \
-    $(DEVICE_PATH)/configs/media_codecs_performance.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs_performance.xml \
-    $(DEVICE_PATH)/configs/media_profiles_V1_0.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_profiles_V1_0.xml
+PRODUCT_PACKAGES += \
+    android.hardware.media.omx@1.0-impl \
+    mediametrics \
+    libmediametrics \
+    libregistermsext \
+    libstagefright_enc_common \
+    libavmediaserviceextensions
 
 PRODUCT_COPY_FILES += \
-    frameworks/av/media/libstagefright/data/media_codecs_google_audio.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs_google_audio.xml \
-    frameworks/av/media/libstagefright/data/media_codecs_google_telephony.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs_google_telephony.xml \
-    frameworks/av/media/libstagefright/data/media_codecs_google_video.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs_google_video.xml
+    $(call find-copy-subdir-files,*,$(LOCAL_PATH)/configs/media/,$(TARGET_COPY_OUT_VENDOR)/etc)
 
 # Net
 PRODUCT_PACKAGES += \
