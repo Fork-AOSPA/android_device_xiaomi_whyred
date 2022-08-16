@@ -359,7 +359,8 @@ PRODUCT_PROPERTY_OVERRIDES += \
 
 # Soong namespaces
 PRODUCT_SOONG_NAMESPACES += \
-    $(LOCAL_PATH)
+    $(LOCAL_PATH) \
+    kernel/msm-4.19
 
 # SurfaceFlinger
 PRODUCT_PROPERTY_OVERRIDES += \
