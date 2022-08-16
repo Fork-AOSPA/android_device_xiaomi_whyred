@@ -31,6 +31,7 @@ write_headers "${DEVICE}"
 
 # The standard device blobs
 write_makefiles "${MY_DIR}/proprietary-files.txt" true
+write_makefiles "${MY_DIR}/proprietary-files-whyred.txt" true
 
 # Finish
 write_footers
