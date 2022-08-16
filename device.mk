@@ -7,6 +7,9 @@
 # Inherit proprietary files
 $(call inherit-product-if-exists, vendor/xiaomi/whyred/whyred-vendor.mk)
 
+# Board Platform
+TARGET_BOARD_PLATFORM := sdm660
+
 # Soong namespaces
 PRODUCT_SOONG_NAMESPACES += \
     $(LOCAL_PATH)
