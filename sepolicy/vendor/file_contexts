@@ -1,0 +1,56 @@
+# Biometric
+/(vendor|system/vendor)/bin/hw/android\.hardware\.biometrics\.fingerprint@2\.1-service\.xiaomi_sdm660   u:object_r:hal_fingerprint_sdm660_exec:s0
+
+# Fingerprint
+/data/gf_data(/.*)?                             u:object_r:fingerprintd_data_file:s0
+/data/vendor/fpc(/.*)?                          u:object_r:fingerprint_vendor_data_file:s0
+/data/vendor/gf_data(/.*)?                      u:object_r:fingerprint_vendor_data_file:s0
+/data/vendor/goodix(/.*)?                       u:object_r:fingerprint_vendor_data_file:s0
+/dev/goodix_fp                                  u:object_r:fingerprint_device:s0
+
+# Firmware
+/firmware                                       u:object_r:firmware_file:s0
+/bt_firmware                                    u:object_r:bt_firmware_file:s0
+
+# CNE
+/(vendor|system/vendor)/bin/mutualex            u:object_r:vendor_mutualex_exec:s0
+
+# Media
+/(vendor|system/vendor)/bin/hw/vendor\.qti\.media\.c2@1\.0-service u:object_r:mediacodec_exec:s0
+
+# Vendor block device
+#/dev/block/platform/soc/c0c4000.sdhci/by-name/vendor u:object_r:system_block_device:s0
+
+# Hexagon DSP-side executable needed for Halide operation
+# This is labeled as public_adsprpcd_file as it needs to be read by apps
+# (e.g. Google Camera App)
+/mnt/vendor/dsp/fastrpc_shell_3                 u:object_r:public_adsprpcd_file:s0
+
+# IR
+/dev/lirc0                                      u:object_r:spidev_device:s0
+/dev/spidev7.1                                  u:object_r:spidev_device:s0
+
+# Root files
+/persist(/.*)?                                  u:object_r:mnt_vendor_file:s0
+
+# Thermal
+/data/vendor/thermal(/.*)?                      u:object_r:thermal_data_file:s0
+
+# Wakeup
+/sys/devices/platform/soc/800f000\.qcom,spmi/spmi-0/spmi0-00/800f000\.qcom,spmi:qcom,pm660@0:qcom,pm660_rtc/rtc/rtc0/wakeup[0-9]+(/.*)?                     u:object_r:sysfs_wakeup:s0
+/sys/devices/platform/soc/800f000\.qcom,spmi/spmi-0/spmi0-00/800f000\.qcom,spmi:qcom,pm660@0:qpnp,fg/power_supply/bms/wakeup[0-9]+(/.*)?                    u:object_r:sysfs_wakeup:s0
+/sys/devices/platform/soc/800f000\.qcom,spmi/spmi-0/spmi0-00/800f000\.qcom,spmi:qcom,pm660@0:qcom,qpnp-smb2/power_supply/battery/wakeup[0-9]+(/.*)?         u:object_r:sysfs_wakeup:s0
+/sys/devices/platform/soc/800f000\.qcom,spmi/spmi-0/spmi0-00/800f000\.qcom,spmi:qcom,pm660@0:qcom,qpnp-smb2/power_supply/dc/wakeup[0-9]+(/.*)?              u:object_r:sysfs_wakeup:s0
+/sys/devices/platform/soc/800f000\.qcom,spmi/spmi-0/spmi0-00/800f000\.qcom,spmi:qcom,pm660@0:qcom,qpnp-smb2/power_supply/main/wakeup[0-9]+(/.*)?            u:object_r:sysfs_wakeup:s0
+/sys/devices/platform/soc/800f000\.qcom,spmi/spmi-0/spmi0-00/800f000\.qcom,spmi:qcom,pm660@0:qcom,qpnp-smb2/power_supply/pc_port/wakeup[0-9]+(/.*)?         u:object_r:sysfs_wakeup:s0
+/sys/devices/platform/soc/800f000\.qcom,spmi/spmi-0/spmi0-00/800f000\.qcom,spmi:qcom,pm660@0:qcom,qpnp-smb2/power_supply/usb/wakeup[0-9]+(/.*)?             u:object_r:sysfs_wakeup:s0
+/sys/devices/platform/soc/c176000\.i2c/i2c-2/2-001d/power_supply/parallel/wakeup[0-9]+(/.*)?                                                                u:object_r:sysfs_wakeup:s0
+/sys/devices/platform/soc/ca0c000\.qcom,cci/ca0c000\.qcom,cci:qcom,camera@0/video4linux/video[0-9]/wakeup[0-9]+(/.*)?                                       u:object_r:sysfs_wakeup:s0
+/sys/devices/platform/soc/ca0c000\.qcom,cci/ca0c000\.qcom,cci:qcom,camera@1/video4linux/video[0-9]/wakeup[0-9]+(/.*)?                                       u:object_r:sysfs_wakeup:s0
+/sys/devices/platform/soc/ca0c000\.qcom,cci/ca0c000\.qcom,cci:qcom,camera@2/video4linux/video[0-9]/wakeup[0-9]+(/.*)?                                       u:object_r:sysfs_wakeup:s0
+
+# HALs
+/(vendor|system/vendor)/bin/hw/android\.hardware\.ir@1\.0-service\.xiaomi_sdm660          u:object_r:hal_ir_default_exec:s0
+/(vendor|system/vendor)/bin/hw/android\.hardware\.light@2\.0-service\.xiaomi_sdm660       u:object_r:hal_light_default_exec:s0
+/(vendor|system/vendor)/bin/hw/vendor\.qti\.memory\.pasrmanager\@1\.0-service             u:object_r:pasrmanager_memory_qti_exec:s0
+/(vendor|system/vendor)/bin/hw/vendor\.qti\.psiclient\@1\.0-service                       u:object_r:psiservice_exec:s0

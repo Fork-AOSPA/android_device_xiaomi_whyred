@@ -101,6 +101,11 @@ TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/init/etc/fstab.qcom
 # Symlinks
 TARGET_MOUNT_POINTS_SYMLINKS := true
 
+# SELinux
+BOARD_VENDOR_SEPOLICY_DIRS += $(DEVICE_PATH)/sepolicy/vendor
+PRODUCT_PUBLIC_SEPOLICY_DIRS += $(DEVICE_PATH)/sepolicy/public
+PRODUCT_PRIVATE_SEPOLICY_DIRS += $(DEVICE_PATH)/sepolicy/private
+
 # Treble
 BOARD_VNDK_VERSION := current
 
