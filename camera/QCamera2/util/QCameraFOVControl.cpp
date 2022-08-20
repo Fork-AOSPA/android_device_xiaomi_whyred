@@ -211,7 +211,7 @@ cam_capability_t QCameraFOVControl::consolidateCapabilities(
                         capsConsolidated.preview_sizes_tbl[previewSizesTblCntFinal].width =
                            capsAuxCam->preview_sizes_tbl[j].width;
                         capsConsolidated.preview_sizes_tbl[previewSizesTblCntFinal].height =
-                           capsAuxCam->preview_sizes_tbl[j].height;
+                           capsMainCam->preview_sizes_tbl[j].height;
                     }
                     ++previewSizesTblCntFinal;
                     break;
@@ -235,7 +235,7 @@ cam_capability_t QCameraFOVControl::consolidateCapabilities(
                         capsConsolidated.video_sizes_tbl[videoSizesTblCntFinal].width =
                            capsAuxCam->video_sizes_tbl[j].width;
                         capsConsolidated.video_sizes_tbl[videoSizesTblCntFinal].height =
-                           capsAuxCam->video_sizes_tbl[j].height;
+                           capsMainCam->video_sizes_tbl[j].height;
                     }
                     ++videoSizesTblCntFinal;
                     break;
@@ -259,7 +259,7 @@ cam_capability_t QCameraFOVControl::consolidateCapabilities(
                        capsConsolidated.livesnapshot_sizes_tbl[livesnapshotSizesTblCntFinal].width=
                           capsAuxCam->livesnapshot_sizes_tbl[j].width;
                        capsConsolidated.livesnapshot_sizes_tbl[livesnapshotSizesTblCntFinal].height=
-                          capsAuxCam->livesnapshot_sizes_tbl[j].height;
+                          capsMainCam->livesnapshot_sizes_tbl[j].height;
                     }
                     ++livesnapshotSizesTblCntFinal;
                     break;
