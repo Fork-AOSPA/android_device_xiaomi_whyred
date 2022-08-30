@@ -22,7 +22,8 @@ TARGET_KERNEL_VERSION := 4.19
 PRODUCT_PACKAGES += \
     WhyredFrameworksOverlay \
     WhyredSettingsOverlay \
-    WhyredSystemUIOverlay
+    WhyredSystemUIOverlay \
+    WhyredWifiOverlay
 
 # QTI Components
 TARGET_COMMON_QTI_COMPONENTS := \
