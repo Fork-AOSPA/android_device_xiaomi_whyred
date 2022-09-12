@@ -27,20 +27,14 @@ PRODUCT_PACKAGES += \
 
 # QTI Components
 TARGET_COMMON_QTI_COMPONENTS := \
-    adreno-legacy \
     audio \
-    av \
     bt \
-    display \
     gps \
     init \
-    media-legacy \
     overlay \
     perf \
     telephony \
     usb \
-    vibrator \
-    wfd-legacy \
     wlan
 
 # Soong namespaces
@@ -129,13 +123,6 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     vendor.qti.hardware.capabilityconfigstore@1.0.vendor
 
-# Codec2 modules
-PRODUCT_PACKAGES += \
-    com.android.media.swcodec \
-    libsfplugin_ccodec \
-    android.hardware.media.c2@1.0.vendor \
-    android.hardware.media.c2@1.1.vendor
-
 # Component overrides
 PRODUCT_COPY_FILES += \
     $(DEVICE_PATH)/configs/component-overrides.xml:$(TARGET_COPY_OUT_VENDOR)/etc/sysconfig/component-overrides.xml \
@@ -159,20 +146,26 @@ PRODUCT_PACKAGES += \
     gralloc.sdm660 \
     hwcomposer.sdm660 \
     memtrack.sdm660 \
-    libvulkan
+    libdisplayconfig \
+    libdisplayconfig.qti \
+    libdisplayconfig.qti.vendor \
+    libtinyxml \
+    libqdMetaData \
+    libqdMetaData.system
 
 PRODUCT_PACKAGES += \
+    android.frameworks.displayservice@1.0_32 \
+    android.frameworks.displayservice@1.0.vendor \
+    android.hardware.graphics.allocator@2.0-impl:64 \
+    android.hardware.graphics.allocator@2.0-service \
+    android.hardware.graphics.mapper@2.0-impl-2.1 \
+    android.hardware.graphics.composer@2.1-service \
     android.hardware.memtrack@1.0-impl \
     android.hardware.memtrack@1.0-service \
     android.frameworks.displayservice@1.0 \
-    android.frameworks.displayservice@1.0.vendor \
-    android.hardware.graphics.composer@2.1-service \
-    android.hardware.graphics.mapper@3.0-impl-qti-display \
-    android.hardware.graphics.mapper@4.0-impl-qti-display \
-    vendor.display.config@2.0 \
     vendor.display.config@1.9.vendor \
     vendor.display.config@2.0.vendor \
-    vendor.qti.hardware.display.allocator-service
+    vendor.qti.hardware.display.mapper@2.0.vendor
 
 # DPM
 PRODUCT_PACKAGES += \
@@ -279,16 +272,15 @@ PRODUCT_PACKAGES += \
     android.hardware.lights-service.qti
 
 # Media
-PRODUCT_PACKAGES += \
-    android.hardware.media.omx@1.0-impl \
-    mediametrics \
-    libmediametrics \
-    libregistermsext \
-    libstagefright_enc_common \
-    libavmediaserviceextensions
+PRODUCT_COPY_FILES += \
+    $(DEVICE_PATH)/configs/media_codecs.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs.xml \
+    $(DEVICE_PATH)/configs/media_codecs_performance.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs_performance.xml \
+    $(DEVICE_PATH)/configs/media_profiles_V1_0.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_profiles_V1_0.xml
 
 PRODUCT_COPY_FILES += \
-    $(call find-copy-subdir-files,*,$(LOCAL_PATH)/configs/media/,$(TARGET_COPY_OUT_VENDOR)/etc)
+    frameworks/av/media/libstagefright/data/media_codecs_google_audio.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs_google_audio.xml \
+    frameworks/av/media/libstagefright/data/media_codecs_google_telephony.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs_google_telephony.xml \
+    frameworks/av/media/libstagefright/data/media_codecs_google_video.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs_google_video.xml
 
 # Net
 PRODUCT_PACKAGES += \
